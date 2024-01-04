@@ -1,5 +1,7 @@
 ### Hello, I'm Agus Stiawan! 👋
 
+- 🚀 I'm a passionate React Developer specializing in React and TailwindCSS.
+
 <!--
 **Aguezz/Aguezz** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 
