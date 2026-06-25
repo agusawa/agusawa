@@ -37,7 +37,7 @@ export default function ArticleListClient({ articles, tags }: Props) {
     <div>
       <header className="mb-10">
         <div className="flex items-center justify-between mb-1">
-          <p className="font-mono text-xs text-emerald-600 dark:text-emerald-400 tracking-widest uppercase">
+          <p className="font-mono text-lg text-emerald-600 dark:text-emerald-400">
             agusawa
           </p>
           <ThemeToggle />
