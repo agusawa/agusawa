@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import ThemeProvider from '@/components/ThemeProvider'
-import { siteUrl } from '@/lib/seo'
 import './globals.css'
 
 const geist = Geist({
@@ -15,7 +14,9 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl()),
+  metadataBase: process.env.NEXT_PUBLIC_SITE_URL
+    ? new URL(process.env.NEXT_PUBLIC_SITE_URL)
+    : undefined,
   title: 'TIL',
   description: 'Today I Learned - things picked up while building.',
   openGraph: {

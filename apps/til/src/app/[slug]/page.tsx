@@ -36,7 +36,7 @@ export default async function ArticlePage({ params }: Props) {
     <article>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/<\//g, '<\\/') }}
       />
       <div className="flex items-center justify-between mb-10">
         <Link
