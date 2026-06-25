@@ -7,6 +7,7 @@ import { getAllSlugs, getArticleBySlug } from '@/lib/til'
 import { buildMetadata, buildArticleJsonLd } from '@/lib/seo'
 import ArticleContent from '@/components/ArticleContent'
 import ThemeToggle from '@/components/ThemeToggle'
+import Footer from '@/components/Footer'
 
 export async function generateStaticParams() {
   return getAllSlugs().map((slug) => ({ slug }))
@@ -70,6 +71,7 @@ export default async function ArticlePage({ params }: Props) {
       </header>
 
       <ArticleContent html={contentHtml} />
+      <Footer />
     </article>
   )
 }

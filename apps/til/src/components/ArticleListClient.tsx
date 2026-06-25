@@ -5,6 +5,7 @@ import type { TILArticle } from '@/lib/til'
 import ArticleCard from './ArticleCard'
 import ArticleFilters from './ArticleFilters'
 import ThemeToggle from './ThemeToggle'
+import Footer from './Footer'
 
 interface Props {
   articles: TILArticle[]
@@ -77,11 +78,7 @@ export default function ArticleListClient({ articles, tags }: Props) {
         )}
       </div>
 
-      <footer className="mt-10 pt-6 border-t border-zinc-200 dark:border-zinc-800">
-        <p className="font-mono text-xs text-zinc-400 dark:text-zinc-700">
-          {articles.length} {articles.length === 1 ? 'entry' : 'entries'} total
-        </p>
-      </footer>
+      <Footer note={`${articles.length} ${articles.length === 1 ? 'entry' : 'entries'} total`} />
     </div>
   )
 }
