@@ -2,10 +2,10 @@
 
 import { useTheme } from 'next-themes'
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
-import { Monitor, Moon, Sun } from 'lucide-react'
+import { Desktop, Moon, Sun } from '@phosphor-icons/react/dist/ssr'
 
 const OPTIONS = [
-  { value: 'system', label: 'Auto', icon: Monitor },
+  { value: 'system', label: 'Auto', icon: Desktop },
   { value: 'light', label: 'Light', icon: Sun },
   { value: 'dark', label: 'Dark', icon: Moon },
 ] as const
@@ -46,7 +46,7 @@ export default function ThemeToggle() {
         aria-expanded={open}
         className="flex items-center gap-1.5 font-mono text-[11px] px-2.5 py-1.5 rounded-sm border border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400 hover:border-zinc-400 dark:hover:border-zinc-600 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors duration-150"
       >
-        <CurrentIcon size={12} strokeWidth={1.75} />
+        <CurrentIcon size={12} weight="regular" />
         <span>{current.label}</span>
         <svg
           width="8"
@@ -78,7 +78,7 @@ export default function ThemeToggle() {
                       : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-900'
                   }`}
                 >
-                  <Icon size={12} strokeWidth={active ? 2 : 1.75} />
+                  <Icon size={12} weight={active ? 'bold' : 'regular'} />
                   <span>{opt.label}</span>
                 </button>
               </li>

@@ -6,13 +6,23 @@ settings:
 
 importers:
 
-  .: {}
+  .:
+    dependencies:
+      '@phosphor-icons/react':
+        specifier: ^2.1.10
+        version: 2.1.10(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      motion:
+        specifier: ^12.41.0
+        version: 12.41.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
 
   apps/agusawa:
     dependencies:
-      lucide-react:
-        specifier: ^1.21.0
-        version: 1.21.0(react@19.2.4)
+      '@phosphor-icons/react':
+        specifier: ^2.1.10
+        version: 2.1.10(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      motion:
+        specifier: ^12.41.0
+        version: 12.41.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       next:
         specifier: 16.2.9
         version: 16.2.9(@babel/core@7.29.7)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -708,6 +718,13 @@ packages:
   '@nolyfill/is-core-module@1.0.39':
     resolution: {integrity: sha512-nn5ozdjYQpUCZlWGuxcJY/KpxkWQs4DcbMCmKojjyrYDEAGy4Ce19NN4v5MduafTwJlbKc99UA8YhSVqq9yPZA==}
     engines: {node: '>=12.4.0'}
+
+  '@phosphor-icons/react@2.1.10':
+    resolution: {integrity: sha512-vt8Tvq8GLjheAZZYa+YG/pW7HDbov8El/MANW8pOAz4eGxrwhnbfrQZq0Cp4q8zBEu8NIhHdnr+r8thnfRSNYA==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: '>= 16.8'
+      react-dom: '>= 16.8'
 
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
@@ -1730,6 +1747,20 @@ packages:
     resolution: {integrity: sha512-gIXjKqtFuWEgzFRJA9WCQeSJLZDjgJUOMCMzxtvFq/37KojM1BFGufqsCy0r4qSQmYLsZYMeyRqzIWOMup03sw==}
     engines: {node: '>=14'}
 
+  framer-motion@12.41.0:
+    resolution: {integrity: sha512-OHAMNiCEON1RDBlRGuulsN5AD8ptMjvk5QWfFmYmBLPZ3zFGIJe60kQucQQf4cez1OzQmjYBWDY+dYfISkUdqg==}
+    peerDependencies:
+      '@emotion/is-prop-valid': '*'
+      react: ^18.0.0 || ^19.0.0
+      react-dom: ^18.0.0 || ^19.0.0
+    peerDependenciesMeta:
+      '@emotion/is-prop-valid':
+        optional: true
+      react:
+        optional: true
+      react-dom:
+        optional: true
+
   fs.realpath@1.0.0:
     resolution: {integrity: sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==}
 
@@ -2506,6 +2537,26 @@ packages:
   minipass@7.1.3:
     resolution: {integrity: sha512-tEBHqDnIoM/1rXME1zgka9g6Q2lcoCkxHLuc7ODJ5BxbP5d4c2Z5cGgtXAku59200Cx7diuHTOYfSBD8n6mm8A==}
     engines: {node: '>=16 || 14 >=14.17'}
+
+  motion-dom@12.41.0:
+    resolution: {integrity: sha512-Lk3J39fOGg6xNr1KRZsN6usDyBf8aP7MEbUPez1VCughHt79OrP7VGqNrPyFL0riaT7WS8t9DRw1M3BHtM/xKw==}
+
+  motion-utils@12.39.0:
+    resolution: {integrity: sha512-8nadJAJjTtqRkmRF36FoJTrywK9nnFmnPwnSMyxaOCU7GDjN9RTMJIxx9De8ErM+vpPhMccr/6fo5WciyQLnMQ==}
+
+  motion@12.41.0:
+    resolution: {integrity: sha512-avEDKE22rFPJqDr3Ttk7gMQpeaOmNik60NoJ5T0tj+RBCNvz21D3ArY3l4uitoeQ7eIpDqueWaO3pPYFv8JOVA==}
+    peerDependencies:
+      '@emotion/is-prop-valid': '*'
+      react: ^18.0.0 || ^19.0.0
+      react-dom: ^18.0.0 || ^19.0.0
+    peerDependenciesMeta:
+      '@emotion/is-prop-valid':
+        optional: true
+      react:
+        optional: true
+      react-dom:
+        optional: true
 
   ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
@@ -3912,6 +3963,11 @@ snapshots:
 
   '@nolyfill/is-core-module@1.0.39': {}
 
+  '@phosphor-icons/react@2.1.10(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
+    dependencies:
+      react: 19.2.4
+      react-dom: 19.2.4(react@19.2.4)
+
   '@pkgjs/parseargs@0.11.0':
     optional: true
 
@@ -5113,6 +5169,15 @@ snapshots:
       cross-spawn: 7.0.6
       signal-exit: 4.1.0
 
+  framer-motion@12.41.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4):
+    dependencies:
+      motion-dom: 12.41.0
+      motion-utils: 12.39.0
+      tslib: 2.8.1
+    optionalDependencies:
+      react: 19.2.4
+      react-dom: 19.2.4(react@19.2.4)
+
   fs.realpath@1.0.0: {}
 
   fsevents@2.3.3:
@@ -6163,6 +6228,20 @@ snapshots:
   minimist@1.2.8: {}
 
   minipass@7.1.3: {}
+
+  motion-dom@12.41.0:
+    dependencies:
+      motion-utils: 12.39.0
+
+  motion-utils@12.39.0: {}
+
+  motion@12.41.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4):
+    dependencies:
+      framer-motion: 12.41.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      tslib: 2.8.1
+    optionalDependencies:
+      react: 19.2.4
+      react-dom: 19.2.4(react@19.2.4)
 
   ms@2.1.3: {}
 

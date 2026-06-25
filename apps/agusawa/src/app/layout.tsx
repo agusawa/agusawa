@@ -17,8 +17,8 @@ export const metadata: Metadata = {
   metadataBase: process.env.NEXT_PUBLIC_SITE_URL
     ? new URL(process.env.NEXT_PUBLIC_SITE_URL)
     : undefined,
-  title: 'Agus Stiawan',
-  description: 'Software Engineer — I build web applications and tools that are simple to use and easy to maintain.',
+  title: 'Agus Stiawan - Software Engineer',
+  description: 'Agus Stiawan is a software engineer building backend systems, APIs, and web interfaces that stay simple to run and easy to hand off.',
   openGraph: {
     type: 'website',
     siteName: 'Agus Stiawan',
@@ -32,11 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${geist.variable} ${geistMono.variable}`} suppressHydrationWarning>
       <body className="bg-white text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100 font-sans antialiased min-h-screen transition-colors duration-200">
-        <ThemeProvider>
-          <div className="max-w-2xl mx-auto px-6 pt-8 pb-12">
-            {children}
-          </div>
-        </ThemeProvider>
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   )
