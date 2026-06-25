@@ -1,8 +1,10 @@
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { remark } from 'remark'
 import html from 'remark-html'
 import { getAllSlugs, getArticleBySlug } from '@/lib/til'
+import { buildMetadata, buildArticleJsonLd } from '@/lib/seo'
 import ArticleContent from '@/components/ArticleContent'
 import ThemeToggle from '@/components/ThemeToggle'
 
@@ -14,6 +16,13 @@ interface Props {
   params: Promise<{ slug: string }>
 }
 
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params
+  const article = getArticleBySlug(slug)
+  if (!article) return {}
+  return buildMetadata(article)
+}
+
 export default async function ArticlePage({ params }: Props) {
   const { slug } = await params
   const article = getArticleBySlug(slug)
@@ -21,9 +30,14 @@ export default async function ArticlePage({ params }: Props) {
 
   const processed = await remark().use(html).process(article.content)
   const contentHtml = processed.toString()
+  const jsonLd = buildArticleJsonLd(article)
 
   return (
     <article>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className="flex items-center justify-between mb-10">
         <Link
           href="/"
