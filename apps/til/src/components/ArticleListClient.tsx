@@ -1,6 +1,6 @@
 'use client'
 
-import { useSearchParams, useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import type { TILArticle } from '@/lib/til'
 import ArticleCard from './ArticleCard'
 import ArticleFilters from './ArticleFilters'
@@ -12,11 +12,18 @@ interface Props {
 }
 
 export default function ArticleListClient({ articles, tags }: Props) {
-  const searchParams = useSearchParams()
-  const router = useRouter()
+  const [lang, setLang] = useState<'ID' | 'EN' | null>(null)
+  const [selectedTags, setSelectedTags] = useState<string[]>([])
 
-  const lang = searchParams.get('lang') as 'ID' | 'EN' | null
-  const selectedTags = searchParams.get('tags')?.split(',').filter(Boolean) ?? []
+  // Read initial filter state from the URL after mount so the server-rendered
+  // (unfiltered) markup stays intact for static export / SEO.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const initialLang = params.get('lang') as 'ID' | 'EN' | null
+    const initialTags = params.get('tags')?.split(',').filter(Boolean) ?? []
+    if (initialLang) setLang(initialLang)
+    if (initialTags.length > 0) setSelectedTags(initialTags)
+  }, [])
 
   const filtered = articles.filter((article) => {
     if (lang && article.language !== lang) return false
@@ -26,11 +33,14 @@ export default function ArticleListClient({ articles, tags }: Props) {
   })
 
   function updateParams(newLang: string | null, newTags: string[]) {
+    setLang(newLang as 'ID' | 'EN' | null)
+    setSelectedTags(newTags)
+
     const params = new URLSearchParams()
     if (newLang) params.set('lang', newLang)
     if (newTags.length > 0) params.set('tags', newTags.join(','))
     const qs = params.toString()
-    router.push(qs ? `/?${qs}` : '/')
+    window.history.replaceState(null, '', qs ? `/?${qs}` : '/')
   }
 
   return (
