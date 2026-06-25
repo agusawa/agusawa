@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   metadataBase: process.env.NEXT_PUBLIC_SITE_URL
     ? new URL(process.env.NEXT_PUBLIC_SITE_URL)
     : undefined,
-  title: 'TIL',
+  title: 'TIL — Today I Learned by Agus',
   description: 'Today I Learned - things picked up while building.',
   openGraph: {
     type: 'website',
