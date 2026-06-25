@@ -3,20 +3,35 @@ import type { TILArticle } from '@/lib/til'
 
 export default function ArticleCard({ article }: { article: TILArticle }) {
   return (
-    <div className="border-b py-4">
-      <Link href={`/til/${article.slug}/`} className="text-lg font-semibold hover:underline">
-        {article.title}
+    <article className="border-b border-zinc-200 dark:border-zinc-800 group">
+      <Link href={`/${article.slug}/`} className="flex gap-5 py-5">
+        <time className="font-mono text-[11px] text-zinc-400 dark:text-zinc-600 shrink-0 pt-0.75 w-24 leading-tight">
+          {article.date}
+        </time>
+        <div className="flex-1 min-w-0">
+          <h2 className="text-zinc-900 dark:text-zinc-100 font-medium text-sm leading-snug group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors duration-150">
+            {article.title}
+          </h2>
+          {article.summary && (
+            <p className="text-zinc-500 text-xs mt-1 leading-relaxed line-clamp-2">
+              {article.summary}
+            </p>
+          )}
+          <div className="flex flex-wrap gap-1.5 mt-2">
+            <span className="font-mono text-[10px] text-zinc-400 dark:text-zinc-600 border border-zinc-200 dark:border-zinc-800 px-1.5 py-0.5 rounded-sm">
+              {article.language}
+            </span>
+            {article.tags.map((tag) => (
+              <span
+                key={tag}
+                className="font-mono text-[10px] text-zinc-400 dark:text-zinc-600 border border-zinc-200 dark:border-zinc-800 px-1.5 py-0.5 rounded-sm"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        </div>
       </Link>
-      <div className="flex flex-wrap gap-2 mt-1 text-sm text-gray-500">
-        <span>{article.date}</span>
-        <span className="border px-1 rounded">{article.language}</span>
-        {article.tags.map((tag) => (
-          <span key={tag} className="bg-gray-100 px-1 rounded">
-            {tag}
-          </span>
-        ))}
-      </div>
-      {article.summary && <p className="mt-1 text-sm text-gray-600">{article.summary}</p>}
-    </div>
+    </article>
   )
 }
