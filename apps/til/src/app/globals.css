@@ -1,1 +1,65 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* Use .dark class instead of prefers-color-scheme.
+   next-themes handles system detection in JS and applies/removes .dark on <html>. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+/* Prose color tokens - swap per theme */
+:root {
+  --prose-code-color: rgb(5 150 105);     /* emerald-600 */
+  --prose-code-bg: rgb(244 244 245);      /* zinc-100 */
+  --prose-code-border: rgb(228 228 231);  /* zinc-200 */
+  --prose-pre-bg: rgb(244 244 245);       /* zinc-100 */
+  --prose-pre-border: rgb(228 228 231);   /* zinc-200 */
+  --prose-link-color: rgb(5 150 105);     /* emerald-600 */
+  --prose-blockquote-border: rgb(5 150 105);
+}
+
+.dark {
+  --prose-code-color: rgb(52 211 153);    /* emerald-400 */
+  --prose-code-bg: rgb(24 24 27);         /* zinc-900 */
+  --prose-code-border: rgb(39 39 42);     /* zinc-800 */
+  --prose-pre-bg: rgb(24 24 27);          /* zinc-900 */
+  --prose-pre-border: rgb(39 39 42);      /* zinc-800 */
+  --prose-link-color: rgb(52 211 153);    /* emerald-400 */
+  --prose-blockquote-border: rgb(52 211 153);
+}
+
+.prose :not(pre) > code {
+  color: var(--prose-code-color);
+  background: var(--prose-code-bg);
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  border: 1px solid var(--prose-code-border);
+  font-weight: 400;
+  font-size: 0.8em;
+}
+
+.prose :not(pre) > code::before,
+.prose :not(pre) > code::after {
+  content: none;
+}
+
+.prose pre {
+  background: var(--prose-pre-bg) !important;
+  border: 1px solid var(--prose-pre-border);
+}
+
+.prose a {
+  color: var(--prose-link-color);
+  text-decoration-color: color-mix(in srgb, var(--prose-link-color) 40%, transparent);
+}
+
+.prose a:hover {
+  text-decoration-color: var(--prose-link-color);
+}
+
+.prose blockquote {
+  border-left-color: var(--prose-blockquote-border);
+}
