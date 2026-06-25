@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import ThemeProvider from '@/components/ThemeProvider'
+import { siteUrl } from '@/lib/seo'
 import './globals.css'
 
 const geist = Geist({
@@ -14,8 +15,16 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl()),
   title: 'TIL',
   description: 'Today I Learned - things picked up while building.',
+  openGraph: {
+    type: 'website',
+    siteName: 'TIL',
+  },
+  twitter: {
+    card: 'summary',
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
