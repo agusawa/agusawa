@@ -1,4 +1,4 @@
-import { Briefcase, Github, Linkedin, Mail } from 'lucide-react'
+import { Briefcase, Code, Link as LinkIcon, Mail } from 'lucide-react'
 
 const LINKS = [
   {
@@ -7,12 +7,12 @@ const LINKS = [
     href: 'mailto:agus.stiawan2211@gmail.com',
   },
   {
-    icon: Github,
+    icon: Code,
     label: 'github.com/agusawa',
     href: 'https://github.com/agusawa',
   },
   {
-    icon: Linkedin,
+    icon: LinkIcon,
     label: 'linkedin.com/in/agus-stiawan',
     href: 'https://www.linkedin.com/in/agus-stiawan/',
   },

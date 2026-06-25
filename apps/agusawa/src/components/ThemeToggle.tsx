@@ -1,7 +1,7 @@
 'use client'
 
 import { useTheme } from 'next-themes'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import { Monitor, Moon, Sun } from 'lucide-react'
 
 const OPTIONS = [
@@ -10,13 +10,19 @@ const OPTIONS = [
   { value: 'dark', label: 'Dark', icon: Moon },
 ] as const
 
+const emptySubscribe = () => () => {}
+
 export default function ThemeToggle() {
   const { theme, setTheme } = useTheme()
-  const [mounted, setMounted] = useState(false)
+  // Avoids hydration mismatch without calling setState in an effect:
+  // server snapshot is always false, client snapshot is always true.
+  const mounted = useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false,
+  )
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
-
-  useEffect(() => setMounted(true), [])
 
   useEffect(() => {
     if (!open) return
