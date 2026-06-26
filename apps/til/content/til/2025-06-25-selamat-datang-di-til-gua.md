@@ -1,5 +1,5 @@
 ---
-title: "Selamat Datang di LIT Gua!"
+title: "Selamat Datang di TIL Gua!"
 date: "2025-06-25"
 language: "ID"
 tags: []
