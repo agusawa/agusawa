@@ -1,6 +1,6 @@
 ---
 title: "Selamat Datang di TIL Gua!"
-date: "2025-06-25"
+date: "2026-06-25"
 language: "ID"
 tags: []
 summary: "Alasan gua membuat website ini"
