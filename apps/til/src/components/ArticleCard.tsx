@@ -6,7 +6,7 @@ export default function ArticleCard({ article }: { article: TILArticle }) {
     <article className="border-b border-zinc-200 dark:border-zinc-800 group">
       <Link href={`/${article.slug}/`} className="flex gap-5 py-5">
         <time className="font-mono text-[11px] text-zinc-400 dark:text-zinc-600 shrink-0 pt-0.75 w-24 leading-tight">
-          {article.date}
+          {new Date(article.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' })}
         </time>
         <div className="flex-1 min-w-0">
           <h2 className="text-zinc-900 dark:text-zinc-100 font-medium text-sm leading-snug group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors duration-150">
