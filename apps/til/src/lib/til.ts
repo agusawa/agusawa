@@ -21,12 +21,21 @@ const CONTENT_DIR =
   process.env.TIL_CONTENT_DIR ?? path.join(process.cwd(), 'content', 'til')
 
 function deriveSlug(filename: string): string {
-  return filename.replace(/^\d{4}-\d{2}-\d{2}-/, '').replace(/\.md$/, '')
+  return filename.replace(/^\d{2}-/, '').replace(/\.md$/, '')
 }
 
-function parseArticle(filename: string): TILArticle | null {
+function findArticleFiles(dir: string): string[] {
+  if (!fs.existsSync(dir)) return []
+  return fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+    const entryPath = path.join(dir, entry.name)
+    if (entry.isDirectory()) return findArticleFiles(entryPath)
+    return entry.name.endsWith('.md') ? [entryPath] : []
+  })
+}
+
+function parseArticle(filePath: string): TILArticle | null {
+  const filename = path.basename(filePath)
   try {
-    const filePath = path.join(CONTENT_DIR, filename)
     const raw = fs.readFileSync(filePath, 'utf-8')
     const { data, content } = matter(raw)
 
@@ -51,7 +60,7 @@ function parseArticle(filename: string): TILArticle | null {
 }
 
 export function getAllArticles(): TILArticle[] {
-  const files = fs.readdirSync(CONTENT_DIR).filter((f) => f.endsWith('.md'))
+  const files = findArticleFiles(CONTENT_DIR)
   return files
     .map(parseArticle)
     .filter((a): a is TILArticle => a !== null)
