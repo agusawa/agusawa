@@ -5,6 +5,8 @@ import { STATUS_RANK } from "./statusConfig";
 import { getBannerMessage, isOverCap } from "./focusLogic";
 import { AddProjectForm } from "./components/AddProjectForm";
 import { ProjectCard } from "./components/ProjectCard";
+import { FocusBanner } from "./components/FocusBanner";
+import { CapWarning } from "./components/CapWarning";
 
 export function App() {
   const [projects, setProjects] = useState<Project[]>(() => loadProjects());
@@ -58,12 +60,8 @@ export function App() {
         </div>
       ) : (
         <div className="flex flex-col gap-4">
-          <p className="text-sm text-stone-700">{bannerMessage}</p>
-          {overCap && (
-            <p className="text-xs text-stone-500">
-              3+ active projects — consider dropping to 2 for a bit.
-            </p>
-          )}
+          <FocusBanner message={bannerMessage} />
+          <CapWarning show={overCap} />
           <AddProjectForm onAdd={handleAdd} />
           <div className="flex flex-col gap-3">
             {sortedProjects.map((project) => (
