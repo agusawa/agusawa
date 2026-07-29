@@ -24,7 +24,7 @@ export function RestTimer({ onDone }: RestTimerProps) {
     const minutes = Math.floor(remaining / 60);
     const seconds = remaining % 60;
     return (
-      <span className="text-sm text-stone-500">
+      <span className="text-sm text-stone-500 dark:text-stone-400">
         Stepping away — {minutes}:{seconds.toString().padStart(2, "0")}
       </span>
     );
@@ -34,7 +34,7 @@ export function RestTimer({ onDone }: RestTimerProps) {
     <button
       type="button"
       onClick={() => setRemaining(REST_SECONDS)}
-      className="text-sm text-stone-500 underline decoration-dotted hover:text-stone-700"
+      className="text-sm text-stone-500 underline decoration-dotted hover:text-stone-700 dark:text-stone-400 dark:hover:text-stone-200"
     >
       Step away — 5 min
     </button>

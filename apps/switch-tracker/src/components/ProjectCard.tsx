@@ -20,7 +20,7 @@ export function ProjectCard({ project, onUpdate, onDelete }: ProjectCardProps) {
   const meta = STATUS_CONFIG[project.status];
 
   return (
-    <div className="rounded-lg border border-stone-200 bg-white p-4 shadow-sm">
+    <div className="rounded-lg border border-stone-200 bg-white p-4 shadow-sm dark:border-stone-700 dark:bg-stone-800">
       <div className="flex items-center justify-between gap-3">
         <button
           type="button"
@@ -29,7 +29,7 @@ export function ProjectCard({ project, onUpdate, onDelete }: ProjectCardProps) {
         >
           <span aria-hidden="true">{meta.emoji}</span>
           <span className={`text-xs font-medium ${meta.text}`}>{meta.label}</span>
-          <span className="truncate text-sm font-semibold text-stone-800">{project.name}</span>
+          <span className="truncate text-sm font-semibold text-stone-800 dark:text-stone-100">{project.name}</span>
         </button>
 
         <div className="flex items-center gap-1">
@@ -40,7 +40,9 @@ export function ProjectCard({ project, onUpdate, onDelete }: ProjectCardProps) {
               title={STATUS_CONFIG[status].label}
               onClick={() => onUpdate(project.id, { status })}
               className={`h-3.5 w-3.5 rounded-full ${STATUS_CONFIG[status].dot} ${
-                project.status === status ? "ring-2 ring-offset-1 ring-stone-400" : "opacity-40"
+                project.status === status
+                  ? "ring-2 ring-offset-1 ring-stone-400 dark:ring-stone-500 dark:ring-offset-stone-800"
+                  : "opacity-40"
               }`}
             />
           ))}
@@ -49,14 +51,14 @@ export function ProjectCard({ project, onUpdate, onDelete }: ProjectCardProps) {
         <button
           type="button"
           onClick={() => onDelete(project.id)}
-          className="text-xs text-stone-400 hover:text-red-500"
+          className="text-xs text-stone-400 hover:text-red-500 dark:text-stone-500"
         >
           Delete
         </button>
       </div>
 
       {project.nextAction && (
-        <p className="mt-1 truncate pl-6 text-xs text-stone-400">
+        <p className="mt-1 truncate pl-6 text-xs text-stone-400 dark:text-stone-500">
           {project.nextAction}
         </p>
       )}
@@ -91,13 +93,13 @@ function EditableField({ label, value, onCommit }: EditableFieldProps) {
 
   return (
     <label className="flex flex-col gap-1">
-      <span className="text-xs font-medium text-stone-500">{label}</span>
+      <span className="text-xs font-medium text-stone-500 dark:text-stone-400">{label}</span>
       <input
         type="text"
         value={draft}
         onChange={(e) => setDraft(e.target.value)}
         onBlur={() => onCommit(draft)}
-        className="rounded-md border border-stone-300 px-2 py-1 text-sm text-stone-800 focus:border-stone-500 focus:outline-none"
+        className="rounded-md border border-stone-300 px-2 py-1 text-sm text-stone-800 focus:border-stone-500 focus:outline-none dark:border-stone-600 dark:bg-stone-900 dark:text-stone-100 dark:focus:border-stone-400"
       />
     </label>
   );

@@ -22,11 +22,11 @@ export function AddProjectForm({ onAdd }: AddProjectFormProps) {
         value={name}
         onChange={(e) => setName(e.target.value)}
         placeholder="New project name"
-        className="flex-1 rounded-md border border-stone-300 px-3 py-2 text-sm text-stone-800 placeholder:text-stone-400 focus:border-stone-500 focus:outline-none"
+        className="flex-1 rounded-md border border-stone-300 px-3 py-2 text-sm text-stone-800 placeholder:text-stone-400 focus:border-stone-500 focus:outline-none dark:border-stone-600 dark:bg-stone-900 dark:text-stone-100 dark:placeholder:text-stone-500 dark:focus:border-stone-400"
       />
       <button
         type="submit"
-        className="rounded-md bg-stone-800 px-4 py-2 text-sm font-medium text-white hover:bg-stone-700"
+        className="rounded-md bg-stone-800 px-4 py-2 text-sm font-medium text-white hover:bg-stone-700 dark:bg-stone-700 dark:hover:bg-stone-600"
       >
         Add
       </button>

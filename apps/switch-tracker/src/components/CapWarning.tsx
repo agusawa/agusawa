@@ -6,7 +6,7 @@ export function CapWarning({ show }: CapWarningProps) {
   if (!show) return null;
 
   return (
-    <p className="px-1 text-xs text-stone-500">
+    <p className="px-1 text-xs text-stone-500 dark:text-stone-400">
       3+ active projects — consider dropping to 2 for a bit.
     </p>
   );
