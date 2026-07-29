@@ -25,11 +25,11 @@ export function ProjectCard({ project, onUpdate, onDelete }: ProjectCardProps) {
         <button
           type="button"
           onClick={() => setExpanded((v) => !v)}
-          className="flex flex-1 items-center gap-2 text-left"
+          className="flex min-w-0 flex-1 items-center gap-2 text-left"
         >
           <span aria-hidden="true">{meta.emoji}</span>
           <span className={`text-xs font-medium ${meta.text}`}>{meta.label}</span>
-          <span className="text-sm font-semibold text-stone-800">{project.name}</span>
+          <span className="truncate text-sm font-semibold text-stone-800">{project.name}</span>
         </button>
 
         <div className="flex items-center gap-1">
@@ -54,6 +54,12 @@ export function ProjectCard({ project, onUpdate, onDelete }: ProjectCardProps) {
           Delete
         </button>
       </div>
+
+      {project.nextAction && (
+        <p className="mt-1 truncate pl-6 text-xs text-stone-400">
+          {project.nextAction}
+        </p>
+      )}
 
       {expanded && (
         <div className="mt-3 grid gap-2">
