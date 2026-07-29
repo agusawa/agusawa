@@ -9,6 +9,7 @@ import { FocusBanner } from "./components/FocusBanner";
 import { CapWarning } from "./components/CapWarning";
 import { RestTimer } from "./components/RestTimer";
 import { Toast } from "./components/Toast";
+import { ThemeToggle } from "./components/ThemeToggle";
 
 export function App() {
   const [projects, setProjects] = useState<Project[]>(() => loadProjects());
@@ -53,13 +54,16 @@ export function App() {
   return (
     <div className="mx-auto max-w-xl px-4 py-8">
       <header className="mb-6 flex items-center justify-between">
-        <h1 className="text-lg font-semibold text-stone-800">Project Switch Tracker</h1>
-        <RestTimer onDone={() => setToastMessage("Break's over — check back in.")} />
+        <h1 className="text-lg font-semibold text-stone-800 dark:text-stone-100">Project Switch Tracker</h1>
+        <div className="flex items-center gap-3">
+          <RestTimer onDone={() => setToastMessage("Break's over — check back in.")} />
+          <ThemeToggle />
+        </div>
       </header>
 
       {projects.length === 0 ? (
-        <div className="rounded-lg border border-dashed border-stone-300 px-4 py-10 text-center">
-          <p className="mb-4 text-sm text-stone-500">No projects yet — add one to start tracking.</p>
+        <div className="rounded-lg border border-dashed border-stone-300 px-4 py-10 text-center dark:border-stone-700">
+          <p className="mb-4 text-sm text-stone-500 dark:text-stone-400">No projects yet — add one to start tracking.</p>
           <AddProjectForm onAdd={handleAdd} />
         </div>
       ) : (
