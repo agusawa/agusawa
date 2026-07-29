@@ -7,9 +7,12 @@ import { AddProjectForm } from "./components/AddProjectForm";
 import { ProjectCard } from "./components/ProjectCard";
 import { FocusBanner } from "./components/FocusBanner";
 import { CapWarning } from "./components/CapWarning";
+import { RestTimer } from "./components/RestTimer";
+import { Toast } from "./components/Toast";
 
 export function App() {
   const [projects, setProjects] = useState<Project[]>(() => loadProjects());
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   useEffect(() => {
     saveProjects(projects);
@@ -49,8 +52,9 @@ export function App() {
 
   return (
     <div className="mx-auto max-w-xl px-4 py-8">
-      <header className="mb-6">
+      <header className="mb-6 flex items-center justify-between">
         <h1 className="text-lg font-semibold text-stone-800">Project Switch Tracker</h1>
+        <RestTimer onDone={() => setToastMessage("Break's over — check back in.")} />
       </header>
 
       {projects.length === 0 ? (
@@ -75,6 +79,8 @@ export function App() {
           </div>
         </div>
       )}
+
+      <Toast message={toastMessage} onDismiss={() => setToastMessage(null)} />
     </div>
   );
 }
