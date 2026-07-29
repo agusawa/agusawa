@@ -3,6 +3,7 @@ import type { Project } from "./types";
 import { loadProjects, saveProjects } from "./storage";
 import { STATUS_RANK } from "./statusConfig";
 import { getBannerMessage, isOverCap } from "./focusLogic";
+import { AddProjectForm } from "./components/AddProjectForm";
 
 export function App() {
   const [projects, setProjects] = useState<Project[]>(() => loadProjects());
@@ -51,7 +52,8 @@ export function App() {
 
       {projects.length === 0 ? (
         <div className="rounded-lg border border-dashed border-stone-300 px-4 py-10 text-center">
-          <p className="text-sm text-stone-500">No projects yet — add one to start tracking.</p>
+          <p className="mb-4 text-sm text-stone-500">No projects yet — add one to start tracking.</p>
+          <AddProjectForm onAdd={handleAdd} />
         </div>
       ) : (
         <div className="flex flex-col gap-4">
@@ -61,6 +63,7 @@ export function App() {
               3+ active projects — consider dropping to 2 for a bit.
             </p>
           )}
+          <AddProjectForm onAdd={handleAdd} />
           <ul className="flex flex-col gap-2 text-sm text-stone-700">
             {sortedProjects.map((p) => (
               <li key={p.id}>
