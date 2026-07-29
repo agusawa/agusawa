@@ -4,6 +4,7 @@ import { loadProjects, saveProjects } from "./storage";
 import { STATUS_RANK } from "./statusConfig";
 import { getBannerMessage, isOverCap } from "./focusLogic";
 import { AddProjectForm } from "./components/AddProjectForm";
+import { ProjectCard } from "./components/ProjectCard";
 
 export function App() {
   const [projects, setProjects] = useState<Project[]>(() => loadProjects());
@@ -64,13 +65,16 @@ export function App() {
             </p>
           )}
           <AddProjectForm onAdd={handleAdd} />
-          <ul className="flex flex-col gap-2 text-sm text-stone-700">
-            {sortedProjects.map((p) => (
-              <li key={p.id}>
-                {p.name} — {p.status}
-              </li>
+          <div className="flex flex-col gap-3">
+            {sortedProjects.map((project) => (
+              <ProjectCard
+                key={project.id}
+                project={project}
+                onUpdate={handleUpdate}
+                onDelete={handleDelete}
+              />
             ))}
-          </ul>
+          </div>
         </div>
       )}
     </div>
