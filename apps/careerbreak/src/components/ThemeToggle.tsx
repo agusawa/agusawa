@@ -1,7 +1,7 @@
 'use client'
 
 import { useTheme } from 'next-themes'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import { Monitor, Moon, Sun } from 'lucide-react'
 
 const OPTIONS = [
@@ -12,11 +12,10 @@ const OPTIONS = [
 
 export default function ThemeToggle() {
   const { theme, setTheme } = useTheme()
-  const [mounted, setMounted] = useState(false)
+  // false during SSR, true after hydration, so the icon matches the client theme
+  const mounted = useSyncExternalStore(() => () => {}, () => true, () => false)
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
-
-  useEffect(() => setMounted(true), [])
 
   // Close on outside click
   useEffect(() => {
