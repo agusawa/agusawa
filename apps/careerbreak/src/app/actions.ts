@@ -61,13 +61,15 @@ export async function createTag(name: string): Promise<Tag> {
   return tag
 }
 
-export async function renameTag(id: number, name: string): Promise<void> {
+// Returns the duplicate-name error instead of throwing: Next hides thrown messages in production.
+export async function renameTag(id: number, name: string): Promise<{ ok: true } | { ok: false; error: string }> {
   await requireUser()
   const n = cleanTagName(name)
   try {
     await db()`update tags set name = ${n} where id = ${assertId(id)}`
+    return { ok: true }
   } catch (e) {
-    if ((e as { code?: string }).code === '23505') throw new Error('A tag with that name already exists.')
+    if ((e as { code?: string }).code === '23505') return { ok: false, error: 'A tag with that name already exists.' }
     throw e
   }
 }
