@@ -1,5 +1,6 @@
 import 'server-only'
 import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
 import { isAllowedEmail } from './auth'
 import { adminAuth } from './firebaseAdmin'
 
@@ -20,8 +21,9 @@ export async function getUser(): Promise<{ email: string } | null> {
   }
 }
 
+// Redirect (not throw) so an expired session in an open tab lands on /login; Next applies it client-side for actions.
 export async function requireUser(): Promise<{ email: string }> {
   const user = await getUser()
-  if (!user) throw new Error('Unauthorized')
+  if (!user) redirect('/login')
   return user
 }
