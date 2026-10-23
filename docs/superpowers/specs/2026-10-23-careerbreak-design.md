@@ -5,7 +5,7 @@ App: `apps/careerbreak` → `careerbreak.stiawan.site`
 
 ## Intent
 
-Agus is between jobs starting Monday 26 October 2026. During that time he'll be learning many things and trying many ways to earn money at once. He wants one private place to:
+Agus is between jobs starting Monday 19 October 2026. During that time he'll be learning many things and trying many ways to earn money at once. He wants one private place to:
 
 - plan each day as a to-do list,
 - set a few goals for each week,
@@ -43,7 +43,7 @@ Success: every Sunday he can open the Review tab and honestly see what he did, w
 - Name and domain: Career Break, `careerbreak.stiawan.site`.
 - Database: MongoDB, connected with a plain `MONGODB_URI` (official `mongodb` driver, no ODM). Changed from Postgres on 2026-10-23 because the Supabase quota was exceeded. MongoDB has no foreign keys, so the app enforces the reference rules in code (see Data).
 - Auth: a **new, separate Firebase project** (not timetracker's), **Google sign-in only**, and access limited to one specific email.
-- Day 1 of the career break is Monday 26 October 2026.
+- Day 1 of the career break is Monday 19 October 2026 (moved from 26 Oct on 2026-10-23).
 - Main screen layout is "Today first" (option A in the mockups). The Review page is as shown below.
 
 ## Screens
@@ -69,7 +69,7 @@ Above the days, the Week tab also shows that week's goals (and lets him add them
 
 For one week, with ‹ prev / next › to flip between weeks (default: the current week):
 
-- Header: "Week N · 26 Oct – 1 Nov" (Week 1 starts 26 Oct 2026).
+- Header: "Week N · 19 Oct – 25 Oct" (Week 1 starts 19 Oct 2026).
 - **To-dos done**: done / total for the week. Each to-do counts once, on the day it ends up on.
 - **Moved**: how many to-dos slipped to a later day this week ("3 moved to a later day").
 - **By tag**: a bar per tag with done / total.
@@ -85,8 +85,8 @@ A list of tags where he can rename or delete them. Tags get a color automaticall
 
 ## Rules
 
-- A week is Monday–Sunday. Week number = weeks since Monday 26 Oct 2026, starting at 1.
-- Counter: Day N = days since 26 Oct 2026, inclusive (26 Oct = Day 1). Before that date it shows "Starts Monday". There is no end date.
+- A week is Monday–Sunday. Week number = weeks since Monday 19 Oct 2026, starting at 1.
+- Counter: Day N = days since 19 Oct 2026, inclusive (19 Oct = Day 1). Before that date it shows "Starts Monday". There is no end date.
 - A to-do belongs to exactly one current date and has exactly one tag. It also remembers the date it was first planned for, so a moved to-do still shows on its original day as "moved". It can optionally link to one goal from the same week.
 - A goal belongs to one week and has one tag. He marks it hit himself. The linked to-do count is shown for information only.
 - "Today" and dates use the browser's local date (Agus is in Indonesia). The server stores plain dates (`DATE`), not timestamps, for to-dos and weeks.

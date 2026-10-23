@@ -30,14 +30,16 @@ it('weekDays lists Mon..Sun', () => {
 })
 
 it('weekNumber counts from the break start', () => {
-  expect(weekNumber('2026-10-26')).toBe(1)
-  expect(weekNumber('2026-11-02')).toBe(2)
+  expect(weekNumber('2026-10-19')).toBe(1)
+  expect(weekNumber('2026-10-26')).toBe(2)
+  expect(weekNumber('2026-10-12')).toBe(0)
 })
 
 it('breakDay is null before Day 1 and counts inclusively after', () => {
-  expect(breakDay('2026-10-25')).toBeNull()
-  expect(breakDay('2026-10-26')).toBe(1)
-  expect(breakDay('2026-11-02')).toBe(8)
+  expect(breakDay('2026-10-18')).toBeNull()
+  expect(breakDay('2026-10-19')).toBe(1)
+  expect(breakDay('2026-10-23')).toBe(5)
+  expect(breakDay('2026-10-26')).toBe(8)
 })
 
 it('formats dates in fixed English', () => {

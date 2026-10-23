@@ -1,6 +1,6 @@
 // All dates are 'YYYY-MM-DD' strings. Math runs in UTC so the server timezone never shifts a day.
 
-export const BREAK_START = '2026-10-26'
+export const BREAK_START = '2026-10-19'
 
 const DAY_MS = 86_400_000
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
