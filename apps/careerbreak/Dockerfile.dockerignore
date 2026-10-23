@@ -1,0 +1,7 @@
+# Applies only to apps/careerbreak/Dockerfile (BuildKit reads <Dockerfile>.dockerignore).
+**/node_modules
+**/.next
+**/.env*
+!**/.env.example
+.git
+.superpowers
