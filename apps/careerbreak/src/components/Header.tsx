@@ -1,11 +1,13 @@
 'use client'
 
+import { useQueryClient } from '@tanstack/react-query'
 import { CalendarDays, ChartNoAxesColumn, CircleCheck, Menu } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { breakDay, formatDay } from '@/lib/dates'
 import { signOutClient } from '@/lib/firebaseClient'
+import { clearSavedCache } from './QueryProvider'
 import ThemeToggle from './ThemeToggle'
 import { useToday } from './useToday'
 
@@ -20,6 +22,7 @@ const isActive = (path: string, href: string) => (href === '/' ? path === '/' : 
 export default function Header() {
   const path = usePathname()
   const router = useRouter()
+  const queryClient = useQueryClient()
   const today = useToday()
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
@@ -35,6 +38,7 @@ export default function Header() {
   async function signOut() {
     await fetch('/api/session', { method: 'DELETE' })
     await signOutClient().catch(() => {})
+    clearSavedCache(queryClient)
     router.replace('/login')
     router.refresh()
   }

@@ -1,34 +1,30 @@
 'use client'
 
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useSearchParams } from 'next/navigation'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback } from 'react'
 import { getWeek } from '@/app/actions'
 import { todayLocal, weekStart } from '@/lib/dates'
-import type { WeekData } from '@/lib/types'
 
+export const weekKey = (ws: string) => ['week', ws] as const
+
+/**
+ * One week of data, cached per week. Revisiting a week shows the cached copy at once
+ * and refreshes it in the background.
+ */
 export function useWeek(ws: string) {
-  const [data, setData] = useState<WeekData | null>(null)
-  const [error, setError] = useState<string | null>(null)
+  const client = useQueryClient()
+  const query = useQuery({ queryKey: weekKey(ws), queryFn: () => getWeek(ws) })
 
-  const reload = useCallback(async () => {
-    try {
-      setData(await getWeek(ws))
-      setError(null)
-    } catch (e) {
-      setError(e instanceof Error ? e.message : 'Could not load this week.')
-    }
-  }, [ws])
+  // Any save can touch other weeks (tags are shared, notes show on the next week), so refresh them all.
+  const reload = useCallback(() => client.invalidateQueries({ queryKey: ['week'] }), [client])
 
-  useEffect(() => {
-    let live = true
-    getWeek(ws).then(
-      (d) => live && (setData(d), setError(null)),
-      (e) => live && setError(e instanceof Error ? e.message : 'Could not load this week.'),
-    )
-    return () => { live = false }
-  }, [ws])
-
-  return { data: data?.weekStart === ws ? data : null, error, reload }
+  return {
+    data: query.data ?? null,
+    // A failed background refresh keeps showing the cached week; only report errors when there's nothing to show.
+    error: query.error && !query.data ? 'Could not load this week. Check your connection and try again.' : null,
+    reload,
+  }
 }
 
 /** The week in ?w=YYYY-MM-DD if it is a valid Monday, else the current week. */
