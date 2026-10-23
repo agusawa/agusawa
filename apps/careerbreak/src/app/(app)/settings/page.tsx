@@ -3,7 +3,7 @@
 import { Trash2 } from 'lucide-react'
 import { useState } from 'react'
 import { createTag, deleteTag, renameTag } from '@/app/actions'
-import { button, ghost, input, run, sectionTitle } from '@/components/ui'
+import { button, ghost, input, run } from '@/components/ui'
 import { useToday } from '@/components/useToday'
 import { useWeek } from '@/components/useWeek'
 import { weekStart } from '@/lib/dates'
@@ -19,8 +19,8 @@ function Settings({ ws }: { ws: string }) {
   const [name, setName] = useState('')
   const [message, setMessage] = useState<string | null>(null)
 
-  if (error) return <p className="mt-6 text-sm text-red-600">{error}</p>
-  if (!data) return <p className="mt-6 text-sm text-zinc-500">Loading…</p>
+  if (error) return <p className="mt-6 text-[15px] text-flag">{error}</p>
+  if (!data) return <p className="mt-6 text-[15px] text-graphite">Loading your tags…</p>
 
   async function add(e: React.FormEvent) {
     e.preventDefault()
@@ -28,14 +28,15 @@ function Settings({ ws }: { ws: string }) {
   }
 
   return (
-    <section className="my-5">
-      <h2 className={sectionTitle}>Tags</h2>
-      {data.tags.length === 0 && <p className="text-sm text-zinc-500">No tags yet.</p>}
+    <section>
+      <h1 className="text-[2.5rem] font-extrabold tracking-[-0.035em] leading-tight">Tags</h1>
+      <p className="text-[15px] text-graphite mb-6">Rename a tag by editing its name. A tag can only be deleted once nothing uses it.</p>
+      {data.tags.length === 0 && <p className="text-[15px] text-graphite">No tags yet. Add one below, or create one while adding a to-do.</p>}
       <ul>
         {data.tags.map((t) => <TagRow key={`${t.id}-${t.name}`} tag={t} onChange={reload} onMessage={setMessage} />)}
       </ul>
-      {message && <p role="alert" className="text-sm text-red-600 dark:text-red-400 my-2">{message}</p>}
-      <form onSubmit={add} className="flex gap-1.5 mt-3">
+      {message && <p role="alert" className="text-[15px] text-flag my-2">{message}</p>}
+      <form onSubmit={add} className="flex gap-2 mt-4">
         <input className={input} placeholder="New tag name" value={name} maxLength={30} onChange={(e) => setName(e.target.value)} aria-label="New tag name" />
         <button className={button} disabled={!name.trim()}>Add tag</button>
       </form>
@@ -62,12 +63,12 @@ function TagRow({ tag, onChange, onMessage }: { tag: Tag; onChange: () => void; 
   }
 
   return (
-    <li className="flex items-center gap-2 py-1">
-      <span className="size-3 rounded-full shrink-0" style={{ backgroundColor: tag.color }} />
-      <input className={`${input} border-transparent hover:border-zinc-300 dark:hover:border-zinc-700`} value={name} maxLength={30}
+    <li className="flex items-center gap-3 border-b border-rule py-1.5">
+      <span className="size-3 rounded-full shrink-0" style={{ backgroundColor: tag.color }} aria-hidden />
+      <input className={`${input} border-transparent bg-transparent hover:border-rule`} value={name} maxLength={30}
         aria-label={`Rename ${tag.name}`} onChange={(e) => setName(e.target.value)} onBlur={rename}
         onKeyDown={(e) => { if (e.key === 'Enter') (e.target as HTMLInputElement).blur(); if (e.key === 'Escape') setName(tag.name) }} />
-      <button className={ghost} aria-label={`Delete ${tag.name}`} onClick={remove}><Trash2 size={14} /></button>
+      <button className={`${ghost} hover:text-flag`} aria-label={`Delete ${tag.name}`} onClick={remove}><Trash2 size={18} /></button>
     </li>
   )
 }

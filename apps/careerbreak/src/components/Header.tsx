@@ -1,19 +1,21 @@
 'use client'
 
-import { Menu } from 'lucide-react'
+import { CalendarDays, ChartNoAxesColumn, CircleCheck, Menu } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
-import { breakDay } from '@/lib/dates'
+import { breakDay, formatDay } from '@/lib/dates'
 import { signOutClient } from '@/lib/firebaseClient'
 import ThemeToggle from './ThemeToggle'
 import { useToday } from './useToday'
 
 const TABS = [
-  { href: '/', label: 'Today' },
-  { href: '/week', label: 'Week' },
-  { href: '/review', label: 'Review' },
+  { href: '/', label: 'Today', icon: CircleCheck },
+  { href: '/week', label: 'Week', icon: CalendarDays },
+  { href: '/review', label: 'Review', icon: ChartNoAxesColumn },
 ]
+
+const isActive = (path: string, href: string) => (href === '/' ? path === '/' : path.startsWith(href))
 
 export default function Header() {
   const path = usePathname()
@@ -37,37 +39,55 @@ export default function Header() {
     router.refresh()
   }
 
+  // Today has its own big counter; other pages get a small one here.
+  const context = !today ? '' : path === '/' ? formatDay(today) : day ? `Day ${day} of your career break` : 'Your break starts Monday'
+
   return (
-    <header className="border-b border-zinc-200 dark:border-zinc-800 pb-3 mb-2">
-      <div className="flex items-center justify-between gap-2">
-        <p className="font-semibold text-[15px] min-h-6">
-          {today && (day ? <>Day {day} <span className="font-normal text-zinc-500">of your career break</span></> : 'Starts Monday')}
-        </p>
-        <div ref={ref} className="relative">
-          <button onClick={() => setOpen((v) => !v)} aria-label="Menu" aria-expanded={open}
-            className="p-2 rounded-md text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-900">
-            <Menu size={18} />
-          </button>
-          {open && (
-            <div className="absolute right-0 top-full mt-1 w-44 z-50 rounded-md border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-lg p-2 flex flex-col gap-1 text-sm">
-              <Link href="/settings" onClick={() => setOpen(false)} className="px-2 py-1.5 rounded hover:bg-zinc-100 dark:hover:bg-zinc-900">Tags</Link>
-              <div className="px-2 py-1 flex items-center justify-between"><span className="text-zinc-500">Theme</span><ThemeToggle /></div>
-              <button onClick={signOut} className="text-left px-2 py-1.5 rounded hover:bg-zinc-100 dark:hover:bg-zinc-900 text-red-600 dark:text-red-400">Sign out</button>
-            </div>
-          )}
+    <>
+      <header className="flex items-center justify-between gap-3 mb-4 sm:mb-8">
+        <p className="text-[15px] text-graphite min-h-6">{context}</p>
+        <div className="flex items-center gap-1">
+          <nav className="hidden sm:flex gap-1 mr-2" aria-label="Sections">
+            {TABS.map((t) => (
+              <Link key={t.href} href={t.href} aria-current={isActive(path, t.href) ? 'page' : undefined}
+                className={`rounded-lg px-3 py-1.5 text-[15px] ${isActive(path, t.href) ? 'bg-sheet text-ink font-semibold shadow-sm' : 'text-graphite hover:text-ink'}`}>
+                {t.label}
+              </Link>
+            ))}
+          </nav>
+          <div ref={ref} className="relative">
+            <button onClick={() => setOpen((v) => !v)} aria-label="Menu" aria-expanded={open}
+              className="p-2.5 rounded-lg text-graphite hover:text-ink hover:bg-rule/50">
+              <Menu size={20} />
+            </button>
+            {open && (
+              <div className="absolute right-0 top-full mt-1 w-56 z-50 rounded-xl border border-rule bg-sheet shadow-lg p-2 flex flex-col gap-1 text-[15px]">
+                <Link href="/settings" onClick={() => setOpen(false)} className="px-3 py-2 rounded-lg hover:bg-paper">Manage tags</Link>
+                <div className="px-1 py-1"><ThemeToggle /></div>
+                <button onClick={signOut} className="text-left px-3 py-2 rounded-lg hover:bg-paper text-flag">Sign out</button>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
-      <nav className="flex gap-5 mt-2 text-sm">
-        {TABS.map((t) => {
-          const on = t.href === '/' ? path === '/' : path.startsWith(t.href)
-          return (
-            <Link key={t.href} href={t.href}
-              className={on ? 'font-semibold underline underline-offset-8 decoration-2' : 'text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200'}>
-              {t.label}
-            </Link>
-          )
-        })}
+      </header>
+
+      {/* Phones: tabs sit at the bottom, within thumb reach. */}
+      <nav aria-label="Sections"
+        className="sm:hidden fixed inset-x-0 bottom-0 z-40 border-t border-rule bg-sheet/95 backdrop-blur pb-[env(safe-area-inset-bottom)]">
+        <div className="max-w-[40rem] mx-auto grid grid-cols-3">
+          {TABS.map((t) => {
+            const on = isActive(path, t.href)
+            const Icon = t.icon
+            return (
+              <Link key={t.href} href={t.href} aria-current={on ? 'page' : undefined}
+                className={`flex flex-col items-center gap-0.5 py-2.5 text-[12px] ${on ? 'text-pine font-semibold' : 'text-graphite'}`}>
+                <Icon size={22} strokeWidth={on ? 2.25 : 1.75} />
+                {t.label}
+              </Link>
+            )
+          })}
+        </div>
       </nav>
-    </header>
+    </>
   )
 }

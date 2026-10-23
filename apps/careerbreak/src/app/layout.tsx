@@ -1,10 +1,9 @@
 import type { Metadata, Viewport } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Schibsted_Grotesk } from 'next/font/google'
 import ThemeProvider from '@/components/ThemeProvider'
 import './globals.css'
 
-const geist = Geist({ subsets: ['latin'], variable: '--font-geist' })
-const geistMono = Geist_Mono({ subsets: ['latin'], variable: '--font-geist-mono' })
+const schibsted = Schibsted_Grotesk({ subsets: ['latin'], variable: '--font-schibsted' })
 
 export const metadata: Metadata = {
   title: 'Career Break',
@@ -12,14 +11,21 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 }
 
-export const viewport: Viewport = { width: 'device-width', initialScale: 1 }
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#f2f4f1' },
+    { media: '(prefers-color-scheme: dark)', color: '#151b18' },
+  ],
+}
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${geist.variable} ${geistMono.variable}`} suppressHydrationWarning>
-      <body className="bg-white text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100 font-sans antialiased min-h-screen">
+    <html lang="en" className={schibsted.variable} suppressHydrationWarning>
+      <body className="bg-paper text-ink font-sans antialiased min-h-screen text-[16px] leading-normal">
         <ThemeProvider>
-          <div className="max-w-2xl mx-auto px-4 sm:px-6 pt-4 pb-16">{children}</div>
+          <div className="max-w-[40rem] mx-auto px-4 sm:px-8 pt-5 sm:pt-10 pb-28 sm:pb-16">{children}</div>
         </ThemeProvider>
       </body>
     </html>

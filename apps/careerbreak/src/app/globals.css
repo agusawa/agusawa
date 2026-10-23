@@ -4,6 +4,49 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-sans: var(--font-schibsted), ui-sans-serif, system-ui, sans-serif;
+
+  /* Field-notebook palette. Utilities read these vars, so .dark below re-skins everything. */
+  --color-paper: #f2f4f1;
+  --color-sheet: #fbfcfa;
+  --color-ink: #1e2823;
+  --color-graphite: #6a736d;
+  --color-rule: #d9ded9;
+  --color-pine: #2f6b5a;
+  --color-pine-soft: #dfe9e4;
+  --color-flag: #b4432f;
+  --color-note: #f6ecc9;
+}
+
+.dark {
+  --color-paper: #151b18;
+  --color-sheet: #1b2320;
+  --color-ink: #e4ebe6;
+  --color-graphite: #93a097;
+  --color-rule: #2c3732;
+  --color-pine: #6fb39c;
+  --color-pine-soft: #23332d;
+  --color-flag: #e4836f;
+  --color-note: #3a3522;
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-pine);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* The one motion: a check settling in when a to-do or goal is ticked. */
+@keyframes tick {
+  0% { transform: scale(0.6); }
+  60% { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
+.tick-in { animation: tick 220ms ease-out; }
+@media (prefers-reduced-motion: reduce) {
+  .tick-in { animation: none; }
 }

@@ -5,11 +5,12 @@ import { createTag } from '@/app/actions'
 import type { Tag } from '@/lib/types'
 import { button, input, run } from './ui'
 
+/** A tag as a colored dot plus its name: quieter than a filled pill in long lists. */
 export function TagChip({ tag }: { tag: Tag | undefined }) {
   if (!tag) return null
   return (
-    <span className="shrink-0 inline-flex items-center rounded-full px-2 py-0.5 text-[11px] leading-4"
-      style={{ backgroundColor: `${tag.color}26`, color: tag.color }}>
+    <span className="shrink-0 inline-flex items-center gap-1.5 text-[13px] text-graphite">
+      <span className="size-2 rounded-full" style={{ backgroundColor: tag.color }} aria-hidden />
       {tag.name}
     </span>
   )

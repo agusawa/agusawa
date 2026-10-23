@@ -35,17 +35,17 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="min-h-[70vh] flex flex-col items-center justify-center text-center gap-4">
-      <h1 className="text-2xl font-semibold">Career Break</h1>
-      <p className="text-sm text-zinc-500 dark:text-zinc-400">Plan each day, review each week.</p>
+    <main className="min-h-[75vh] flex flex-col justify-center gap-4">
+      <h1 className="text-[4rem] sm:text-[5.5rem] font-extrabold tracking-[-0.045em] leading-[0.95]">Career<br />Break</h1>
+      <p className="text-[17px] text-graphite">Plan each day. Review each Sunday. Do better next week.</p>
       <button
         onClick={signIn}
         disabled={busy}
-        className="mt-2 px-4 py-2 rounded-md bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 text-sm font-medium disabled:opacity-50"
+        className="mt-4 self-start rounded-lg bg-pine text-sheet px-5 py-3 text-[16px] font-semibold disabled:opacity-50"
       >
         {busy ? 'Signing in…' : 'Sign in with Google'}
       </button>
-      {error && <p role="alert" className="text-sm text-red-600 dark:text-red-400">{error}</p>}
+      {error && <p role="alert" className="text-[15px] text-flag">{error}</p>}
     </main>
   )
 }
