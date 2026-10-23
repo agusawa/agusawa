@@ -13,7 +13,7 @@ export default function WeekNav({ weekStart }: { weekStart: string }) {
     <div className="flex items-center justify-between my-4">
       <button onClick={() => go(-1)} className={btn} aria-label="Previous week"><ChevronLeft size={18} /></button>
       <div className="text-sm font-semibold">
-        Week {weekNumber(weekStart)} <span className="font-normal text-zinc-500">· {formatRange(weekStart)}</span>
+        {weekNumber(weekStart) >= 1 ? `Week ${weekNumber(weekStart)}` : 'Before the break'} <span className="font-normal text-zinc-500">· {formatRange(weekStart)}</span>
       </div>
       <button onClick={() => go(1)} className={btn} aria-label="Next week"><ChevronRight size={18} /></button>
     </div>

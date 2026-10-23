@@ -25,7 +25,7 @@ function GoalForm({ data, initial, onDone, onCancel, onTagCreated, submitLabel }
       e.preventDefault()
       if (ready && (await onDone(title, tagId!)) && !initial) { setTitle(''); setTagId(null) }
     }}>
-      <input className={input} placeholder="+ Add a goal for this week" value={title} maxLength={200}
+      <input className={input} placeholder="+ Add a goal" value={title} maxLength={200}
         onChange={(e) => setTitle(e.target.value)} aria-label="Goal title" />
       {(title.trim() || initial) && (
         <div className="flex gap-1.5">
@@ -40,12 +40,17 @@ function GoalForm({ data, initial, onDone, onCancel, onTagCreated, submitLabel }
   )
 }
 
-export default function GoalList({ weekStart, data, onChange }: { weekStart: string; data: WeekData; onChange: () => void }) {
+export default function GoalList({ weekStart, data, onChange, heading = "This week's goals" }: {
+  weekStart: string
+  data: WeekData
+  onChange: () => void
+  heading?: string
+}) {
   const [editing, setEditing] = useState<number | null>(null)
 
   return (
     <section className="my-5">
-      <h2 className={sectionTitle}>This week&apos;s goals</h2>
+      <h2 className={sectionTitle}>{heading}</h2>
       {data.goals.length === 0 && (
         <p className="text-sm text-zinc-500">No goals for this week yet. What do you want to get done?</p>
       )}
