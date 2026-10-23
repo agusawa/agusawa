@@ -1,20 +1,26 @@
-import postgres from 'postgres'
+import os from 'node:os'
+import { MongoClient, type Db, type MongoClientOptions } from 'mongodb'
 
-function create() {
-  const url = process.env.DATABASE_URL
-  if (!url) throw new Error('DATABASE_URL is not set.')
-  return postgres(url, {
-    prepare: false, // required by Supabase's transaction pooler
-    transform: postgres.camel,
-    onnotice: () => {}, // "already exists, skipping" noise from migrate()
-    // Keep DATE columns as 'YYYY-MM-DD' strings instead of JS Dates.
-    types: { date: { to: 1082, from: [1082], serialize: (x: string) => x, parse: (x: string) => x } },
-  })
+const g = globalThis as unknown as { __careerbreakMongo?: Promise<MongoClient> }
+
+function uri(): string {
+  const u = process.env.MONGODB_URI
+  if (!u) throw new Error('MONGODB_URI is not set.')
+  return u
 }
 
-type Sql = ReturnType<typeof create>
-const g = globalThis as unknown as { __careerbreakSql?: Sql }
+/** Database named in the URI path, or "careerbreak" when the URI has none (common on Atlas). */
+export async function db(): Promise<Db> {
+  const u = uri()
+  // Kept on globalThis so dev hot reloads reuse one connection pool.
+  // Hand the driver `os` directly; its default dynamic import('os') fails under Jest and leaves the handshake empty.
+  g.__careerbreakMongo ??= new MongoClient(u, { runtimeAdapters: { os } } as MongoClientOptions).connect()
+  const name = new URL(u).pathname.replace(/^\//, '') || 'careerbreak'
+  return (await g.__careerbreakMongo).db(name)
+}
 
-export function db(): Sql {
-  return (g.__careerbreakSql ??= create())
+export async function closeDb(): Promise<void> {
+  const c = g.__careerbreakMongo
+  g.__careerbreakMongo = undefined
+  if (c) await (await c).close()
 }

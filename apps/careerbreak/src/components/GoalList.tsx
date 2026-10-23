@@ -12,12 +12,12 @@ function GoalForm({ data, initial, onDone, onCancel, onTagCreated, submitLabel }
   data: WeekData
   onTagCreated: () => void
   initial?: Goal
-  onDone: (title: string, tagId: number) => Promise<boolean>
+  onDone: (title: string, tagId: string) => Promise<boolean>
   onCancel?: () => void
   submitLabel: string
 }) {
   const [title, setTitle] = useState(initial?.title ?? '')
-  const [tagId, setTagId] = useState<number | null>(initial?.tagId ?? null)
+  const [tagId, setTagId] = useState<string | null>(initial?.tagId ?? null)
   const ready = title.trim() !== '' && tagId !== null
 
   return (
@@ -46,7 +46,7 @@ export default function GoalList({ weekStart, data, onChange, heading = "This we
   onChange: () => void
   heading?: string
 }) {
-  const [editing, setEditing] = useState<number | null>(null)
+  const [editing, setEditing] = useState<string | null>(null)
 
   return (
     <section className="my-5">

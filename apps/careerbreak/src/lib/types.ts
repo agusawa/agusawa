@@ -1,12 +1,12 @@
-export type Tag = { id: number; name: string; color: string }
-export type Goal = { id: number; weekStart: string; title: string; tagId: number; hit: boolean }
+export type Tag = { id: string; name: string; color: string }
+export type Goal = { id: string; weekStart: string; title: string; tagId: string; hit: boolean }
 export type Todo = {
-  id: number
+  id: string
   date: string
   plannedDate: string
   title: string
-  tagId: number
-  goalId: number | null
+  tagId: string
+  goalId: string | null
   done: boolean
 }
 export type WeekNotes = { weekStart: string; wentWell: string; improve: string }

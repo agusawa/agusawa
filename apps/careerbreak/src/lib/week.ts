@@ -13,7 +13,7 @@ export function stillOpen(todos: Todo[], today: string): Todo[] {
   return todos.filter((t) => !t.done && t.date < today && weekStart(t.date) === ws)
 }
 
-export function linkedDone(todos: Todo[], goalId: number): number {
+export function linkedDone(todos: Todo[], goalId: string): number {
   return todos.filter((t) => t.done && t.goalId === goalId).length
 }
 

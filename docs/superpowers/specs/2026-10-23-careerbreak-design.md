@@ -41,7 +41,7 @@ Success: every Sunday he can open the Review tab and honestly see what he did, w
 ## Decided by Agus
 
 - Name and domain: Career Break, `careerbreak.stiawan.site`.
-- Database: PostgreSQL, hosted on Supabase. The app connects with a plain Postgres connection string, not the Supabase client library, so the host can change later.
+- Database: MongoDB, connected with a plain `MONGODB_URI` (official `mongodb` driver, no ODM). Changed from Postgres on 2026-10-23 because the Supabase quota was exceeded. MongoDB has no foreign keys, so the app enforces the reference rules in code (see Data).
 - Auth: a **new, separate Firebase project** (not timetracker's), **Google sign-in only**, and access limited to one specific email.
 - Day 1 of the career break is Monday 26 October 2026.
 - Main screen layout is "Today first" (option A in the mockups). The Review page is as shown below.
@@ -93,10 +93,12 @@ A list of tags where he can rename or delete them. Tags get a color automaticall
 
 ## Data (shape, not final schema)
 
-- `tags`: name (unique), color
-- `goals`: week_start (date of the Monday), title, tag, hit (bool)
-- `todos`: date (current), planned_date (first planned day; differs from date once moved), title, tag, goal (nullable), done (bool), created order
-- `week_notes`: week_start (unique), went_well, improve
+- `tags`: name, nameLower (unique index), color
+- `goals`: weekStart (date of the Monday), title, tagId, hit (bool)
+- `todos`: date (current), plannedDate (first planned day; differs from date once moved), title, tagId, goalId (nullable), done (bool), createdAt
+- `weekNotes`: _id = weekStart, wentWell, improve
+
+Dates are stored as `'YYYY-MM-DD'` strings. Rules enforced in code: a tag can't be deleted while used; deleting a goal unlinks its to-dos; a to-do's tag and goal must exist, and the goal must be in the to-do's week.
 
 No user column. The app has exactly one allowed user.
 
@@ -114,12 +116,11 @@ No user column. The app has exactly one allowed user.
 - Unlike `til`, this app needs a server (database plus auth checks), so it is **not** a static export. It ships as a Docker image running the Next.js Node server (`output: 'standalone'`), following the shape of `apps/til/Dockerfile`.
 - `NEXT_PUBLIC_FIREBASE_*` values are baked in when the app is built, so in Dokploy they must be set as build arguments (and declared as `ARG` in the Dockerfile), not only as runtime env vars.
 - No deadline: Agus will put it live when it's ready, so build all screens in one pass.
-- Env vars: `DATABASE_URL`, `ALLOWED_EMAIL`, the Firebase web config (`NEXT_PUBLIC_FIREBASE_*`), and Firebase Admin credentials. Provide `.env.example` with names only.
+- Env vars: `MONGODB_URI`, `ALLOWED_EMAIL`, the Firebase web config (`NEXT_PUBLIC_FIREBASE_*`), and Firebase Admin credentials. Provide `.env.example` with names only.
 
 ## Left to the builder
 
-- How migrations run on Dokploy (on container start is fine).
-- Database access library and migrations (keep dependencies minimal; plain SQL migrations are fine).
+- Indexes are created on server start (idempotent).
 - Server Actions vs. route handlers.
 - Exact visual styling, tag color palette, and whether to add a light/dark toggle. It should at least follow the system light/dark setting, like the other apps.
 - Ordering of to-dos within a day.

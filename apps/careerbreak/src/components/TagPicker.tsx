@@ -19,8 +19,8 @@ const NEW = '__new'
 
 export default function TagPicker({ tags, value, onChange, onCreated }: {
   tags: Tag[]
-  value: number | null
-  onChange: (id: number) => void
+  value: string | null
+  onChange: (id: string) => void
   onCreated: () => void
 }) {
   const [adding, setAdding] = useState(tags.length === 0)
@@ -50,7 +50,7 @@ export default function TagPicker({ tags, value, onChange, onCreated }: {
 
   return (
     <select className={input} value={value ?? ''} aria-label="Tag"
-      onChange={(e) => (e.target.value === NEW ? setAdding(true) : onChange(Number(e.target.value)))}>
+      onChange={(e) => (e.target.value === NEW ? setAdding(true) : onChange(e.target.value))}>
       <option value="" disabled>Tag…</option>
       {tags.map((t) => <option key={t.id} value={t.id}>{t.name}</option>)}
       <option value={NEW}>+ New tag…</option>

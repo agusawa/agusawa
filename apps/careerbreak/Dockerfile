@@ -31,7 +31,7 @@ ENV NEXT_PUBLIC_FIREBASE_API_KEY=$NEXT_PUBLIC_FIREBASE_API_KEY \
 RUN pnpm --filter careerbreak build
 
 # ── Run ────────────────────────────────────────────────────────────────────────
-# Runtime env (set in Dokploy): DATABASE_URL, ALLOWED_EMAIL,
+# Runtime env (set in Dokploy): MONGODB_URI, ALLOWED_EMAIL,
 # FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL, FIREBASE_PRIVATE_KEY
 FROM node:22-alpine AS runner
 WORKDIR /app

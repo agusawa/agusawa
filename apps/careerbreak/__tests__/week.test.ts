@@ -1,20 +1,20 @@
 import { dayEntries, linkedDone, reviewStats, stillOpen } from '@/lib/week'
 import type { Goal, Tag, Todo, WeekData } from '@/lib/types'
 
-const learning: Tag = { id: 1, name: 'learning', color: '#4a7cff' }
-const freelance: Tag = { id: 2, name: 'freelance', color: '#3a8a5c' }
-const unused: Tag = { id: 3, name: 'unused', color: '#c55050' }
+const learning: Tag = { id: 't1', name: 'learning', color: '#4a7cff' }
+const freelance: Tag = { id: 't2', name: 'freelance', color: '#3a8a5c' }
+const unused: Tag = { id: 't3', name: 'unused', color: '#c55050' }
 
-const goal: Goal = { id: 10, weekStart: '2026-10-26', title: 'Send 5 pitches', tagId: 2, hit: false }
+const goal: Goal = { id: 'g10', weekStart: '2026-10-26', title: 'Send 5 pitches', tagId: 't2', hit: false }
 
 const todo = (t: Partial<Todo> & Pick<Todo, 'id' | 'date'>): Todo => ({
-  plannedDate: t.date, title: `t${t.id}`, tagId: 1, goalId: null, done: false, ...t,
+  plannedDate: t.date, title: `todo-${t.id}`, tagId: 't1', goalId: null, done: false, ...t,
 })
 
 // Moved Mon → Thu and done there; undone Tue; done Wed.
-const moved = todo({ id: 1, plannedDate: '2026-10-26', date: '2026-10-29', done: true, tagId: 2, goalId: 10 })
-const tue = todo({ id: 2, date: '2026-10-27' })
-const wed = todo({ id: 3, date: '2026-10-28', done: true })
+const moved = todo({ id: '1', plannedDate: '2026-10-26', date: '2026-10-29', done: true, tagId: 't2', goalId: 'g10' })
+const tue = todo({ id: '2', date: '2026-10-27' })
+const wed = todo({ id: '3', date: '2026-10-28', done: true })
 const todos = [moved, tue, wed]
 
 const week = (t: Todo[], g: Goal[] = [goal]): WeekData => ({
@@ -40,7 +40,7 @@ describe('stillOpen', () => {
 })
 
 it('linkedDone counts done to-dos linked to a goal', () => {
-  expect(linkedDone(todos, 10)).toBe(1)
+  expect(linkedDone(todos, 'g10')).toBe(1)
 })
 
 describe('reviewStats', () => {
@@ -71,7 +71,7 @@ describe('reviewStats', () => {
   })
 
   it('ignores to-dos that only planned in this week but now sit outside it', () => {
-    const out = todo({ id: 4, plannedDate: '2026-11-01', date: '2026-11-02' })
+    const out = todo({ id: '4', plannedDate: '2026-11-01', date: '2026-11-02' })
     expect(reviewStats(week([out])).total).toBe(0)
   })
 })

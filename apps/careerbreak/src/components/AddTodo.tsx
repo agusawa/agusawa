@@ -13,8 +13,8 @@ export default function AddTodo({ date, tags, goals, onAdded }: {
   onAdded: () => void
 }) {
   const [title, setTitle] = useState('')
-  const [tagId, setTagId] = useState<number | null>(null)
-  const [goalId, setGoalId] = useState<number | null>(null)
+  const [tagId, setTagId] = useState<string | null>(null)
+  const [goalId, setGoalId] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
   const ready = title.trim() !== '' && tagId !== null
 
@@ -38,7 +38,7 @@ export default function AddTodo({ date, tags, goals, onAdded }: {
         <div className="grid grid-cols-2 gap-1.5">
           <TagPicker tags={tags} value={tagId} onChange={setTagId} onCreated={onAdded} />
           <select className={input} value={goalId ?? ''} aria-label="Goal"
-            onChange={(e) => setGoalId(e.target.value ? Number(e.target.value) : null)}>
+            onChange={(e) => setGoalId(e.target.value || null)}>
             <option value="">No goal</option>
             {goals.map((g) => <option key={g.id} value={g.id}>{g.title}</option>)}
           </select>
