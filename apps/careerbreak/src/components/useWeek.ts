@@ -1,10 +1,12 @@
 'use client'
 
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useSearchParams } from 'next/navigation'
 import { useCallback } from 'react'
-import { getWeek } from '@/app/actions'
+import { getWeek, updateGoal, updateTodo } from '@/app/actions'
 import { todayLocal, weekStart } from '@/lib/dates'
+import { toggleGoalInWeek, toggleTodoInWeek } from '@/lib/optimistic'
+import type { WeekData } from '@/lib/types'
 
 export const weekKey = (ws: string) => ['week', ws] as const
 
@@ -27,9 +29,80 @@ export function useWeek(ws: string) {
   }
 }
 
+/** Optimistically toggles a to-do's done status in query cache with rollback on failure. */
+export function useToggleTodo() {
+  const client = useQueryClient()
+  const mutation = useMutation({
+    mutationFn: async ({ id, done }: { id: string; done: boolean }) => {
+      await updateTodo(id, { done })
+    },
+    onMutate: async ({ id, done }) => {
+      await client.cancelQueries({ queryKey: ['week'] })
+      const previousWeeks = client.getQueriesData<WeekData>({ queryKey: ['week'] })
+      client.setQueriesData<WeekData>({ queryKey: ['week'] }, (old) => {
+        if (!old) return old
+        return toggleTodoInWeek(old, id, done)
+      })
+      return { previousWeeks }
+    },
+    onError: (_err, _vars, context) => {
+      context?.previousWeeks?.forEach(([key, data]) => {
+        client.setQueryData(key, data)
+      })
+      if (typeof window !== 'undefined') {
+        alert('That didn’t save. Check your connection and try again.')
+      }
+    },
+    onSettled: () => {
+      client.invalidateQueries({ queryKey: ['week'] })
+    },
+  })
+
+  return {
+    toggleTodo: mutation.mutate,
+    isPending: mutation.isPending,
+  }
+}
+
+/** Optimistically toggles a weekly goal's hit status in query cache with rollback on failure. */
+export function useToggleGoal() {
+  const client = useQueryClient()
+  const mutation = useMutation({
+    mutationFn: async ({ id, hit }: { id: string; hit: boolean }) => {
+      await updateGoal(id, { hit })
+    },
+    onMutate: async ({ id, hit }) => {
+      await client.cancelQueries({ queryKey: ['week'] })
+      const previousWeeks = client.getQueriesData<WeekData>({ queryKey: ['week'] })
+      client.setQueriesData<WeekData>({ queryKey: ['week'] }, (old) => {
+        if (!old) return old
+        return toggleGoalInWeek(old, id, hit)
+      })
+      return { previousWeeks }
+    },
+    onError: (_err, _vars, context) => {
+      context?.previousWeeks?.forEach(([key, data]) => {
+        client.setQueryData(key, data)
+      })
+      if (typeof window !== 'undefined') {
+        alert('That didn’t save. Check your connection and try again.')
+      }
+    },
+    onSettled: () => {
+      client.invalidateQueries({ queryKey: ['week'] })
+    },
+  })
+
+  return {
+    toggleGoal: mutation.mutate,
+    isPending: mutation.isPending,
+  }
+}
+
 /** The week in ?w=YYYY-MM-DD if it is a valid Monday, else the current week. */
 export function useSelectedWeek(): string {
   const w = useSearchParams().get('w')
   if (w && /^\d{4}-\d{2}-\d{2}$/.test(w) && weekStart(w) === w) return w
   return weekStart(todayLocal())
 }
+

@@ -7,6 +7,7 @@ import type { DayEntry, Goal, Tag } from '@/lib/types'
 import CheckCircle from './CheckCircle'
 import TagPicker, { TagChip } from './TagPicker'
 import { button, ghost, input, run } from './ui'
+import { useToggleTodo } from './useWeek'
 
 export default function TodoItem({ entry, tags, goals, onChange, showMove }: {
   entry: DayEntry
@@ -17,6 +18,7 @@ export default function TodoItem({ entry, tags, goals, onChange, showMove }: {
 }) {
   const { todo, moved } = entry
   const tag = tags.find((t) => t.id === todo.tagId)
+  const { toggleTodo } = useToggleTodo()
   const [open, setOpen] = useState(false)
   const [editing, setEditing] = useState(false)
   const [title, setTitle] = useState(todo.title)
@@ -63,7 +65,7 @@ export default function TodoItem({ entry, tags, goals, onChange, showMove }: {
     <li className="py-1">
       <div className="flex items-center gap-3 py-1.5">
         <CheckCircle checked={todo.done} label={`Done: ${todo.title}`}
-          onChange={(v) => run(() => updateTodo(todo.id, { done: v }), onChange)} />
+          onChange={(v) => toggleTodo({ id: todo.id, done: v })} />
         <button type="button" onClick={() => setOpen((v) => !v)} aria-expanded={open}
           className="min-w-0 flex-1 text-left flex flex-wrap items-baseline gap-x-3 gap-y-0.5">
           <span className={`break-words ${todo.done ? 'line-through decoration-graphite/50 text-graphite' : ''}`}>{todo.title}</span>
