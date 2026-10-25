@@ -8,6 +8,7 @@ import { linkedDone } from '@/lib/week'
 import CheckCircle from './CheckCircle'
 import TagPicker, { TagChip } from './TagPicker'
 import { button, ghost, input, run, sectionTitle } from './ui'
+import { useToggleGoal } from './useWeek'
 
 export const doneLabel = (n: number) => `${n} to-do${n === 1 ? '' : 's'} done`
 
@@ -51,12 +52,13 @@ function GoalForm({ data, initial, onDone, onCancel, onTagCreated, submitLabel }
 }
 
 function GoalRow({ goal, data, onChange, onEdit }: { goal: Goal; data: WeekData; onChange: () => void; onEdit: () => void }) {
+  const { toggleGoal } = useToggleGoal()
   const [open, setOpen] = useState(false)
   return (
     <li className="py-1">
       <div className="flex items-center gap-3 py-1.5">
         <CheckCircle checked={goal.hit} label={`Goal hit: ${goal.title}`}
-          onChange={(v) => run(() => updateGoal(goal.id, { hit: v }), onChange)} />
+          onChange={(v) => toggleGoal({ id: goal.id, hit: v })} />
         <button type="button" onClick={() => setOpen((v) => !v)} aria-expanded={open}
           className="min-w-0 flex-1 text-left flex flex-wrap items-baseline gap-x-3 gap-y-0.5">
           <span className={`break-words font-medium ${goal.hit ? 'text-graphite' : ''}`}>{goal.title}</span>
